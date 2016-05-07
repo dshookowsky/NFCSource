@@ -1,5 +1,5 @@
-angular.module('starter.controllers', [])
-
+angular.module('nfcsource.controllers', [])
+/*
 .controller('DashCtrl', function($scope, $timeout) {
     $scope.updateTime = function () {
         $scope.time = {
@@ -15,33 +15,32 @@ angular.module('starter.controllers', [])
             ]
         }
         $timeout($scope.updateTime, 1000);
-        console.log('yo dawg I heard you like clocks');
+
     }
 
     $scope.updateTime();
 })
+*/
+.controller('HomeTabCtrl', function($scope, $timeout) {
+  console.log('HomeTabCtrl');
+  $scope.updateTime = function () {
+      $scope.time = {
+          now: new Date(),
+          weekdays: [
+              'Sunday',
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday'
+          ]
+      }
+      $timeout($scope.updateTime, 1000);
+  }
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+  $scope.updateTime();
 })
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('FactsCtrl', function($ionicNavBarDelegate) {
+  console.log('FactsCtrl');
 })
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
