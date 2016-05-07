@@ -1,0 +1,24 @@
+/* Empty. Add your own CSS if you like */
+#clock {
+    display: block;
+    margin: 0, auto;
+    margin-top: 2em;
+}
+
+#time {
+    font-size: 8em;
+}
+
+#calendar {
+    display: block;
+    margin: 0, auto;
+    font-size: 2em;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
+ion-content {
+    /* background-color: #dbb66f; */
+}
