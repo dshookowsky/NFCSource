@@ -1,4 +1,3 @@
-console.log('loading nfcservice')
 angular.module('nfcsource.services')
     .factory('nfcService', function ($rootScope, $ionicPlatform) {
 
