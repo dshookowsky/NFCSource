@@ -22,6 +22,8 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
         }
     });
 
+
+
     // It's very handy to add references to $state and $stateParams to the $rootScope
     // so that you can access them from any scope within your applications.For example,
     // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
@@ -30,7 +32,12 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
     $rootScope.$stateParams = $stateParams;
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.backButton.text('Go Back').icon('ion-chevron-left');
+    $ionicConfigProvider.navBar.alignTitle("center"); //Places them at the bottom for all OS
+    $ionicConfigProvider.tabs.position("bottom"); //Places them at the bottom for all OS
+    $ionicConfigProvider.tabs.style("standard"); //Makes them all look the same across all OS
+
     $stateProvider
        .state('scaffold', {
        abstract: true,
@@ -47,9 +54,9 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
          parent: "tabs",
          views: {
            'home-tab': {
-             templateUrl: "templates/home.html",
-             controller: 'HomeTabCtrl'
-           }
+               templateUrl: "templates/home.html",
+               controller: 'HomeTabCtrl'
+            }
          }
        })
        .state('home.facts', {
@@ -61,6 +68,34 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
            }
          }
        })
+       .state('tabs.employee', {
+           url: "/employee/{employeeId}",
+           views: {
+               'home-tab': {
+                   controller: "EmployeeCtrl",
+                   templateUrl: "templates/employee.html"
+               }
+           }
+       })
+       .state('tabs.neckWork', {
+           url: "/neck/{partId}",
+           views: {
+               'home-tab': {
+                   controller: "NeckCtrl",
+                   templateUrl: "templates/neck.html"
+               }
+           }
+       })
+       .state('tabs.bodyWork', {
+           url: "/body/{partId}",
+           views: {
+               'home-tab': {
+                   controller: "BodyCtrl",
+                   templateUrl: "templates/body.html"
+               }
+           }
+       })
+
        .state('home.facts.facts2', {
          url: "/facts2",
          views: {

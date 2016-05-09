@@ -19,6 +19,10 @@
     text-transform: lowercase;
 }
 
-ion-content {
-    /* background-color: #dbb66f; */
+.tab-nav.tabs {
+    margin-bottom: 1.4em;
+}
+
+.button-most {
+    width: 90%;
 }
