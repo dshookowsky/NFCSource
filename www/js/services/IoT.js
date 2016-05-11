@@ -1,13 +1,3 @@
-/*
-{
-                created_date: 1462801247,
-                workflow_step: 1.1,
-                event_desc: “RFID Scanned..”,
-                employee_id: 1234,
-                job_number: 1234,
-                part_number: 1234
-}
-*/
 angular.module('nfcsource.services')
     .factory('IoT', ['$http', function ($http) {
         return {
