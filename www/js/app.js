@@ -22,8 +22,6 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
         }
     });
 
-
-
     // It's very handy to add references to $state and $stateParams to the $rootScope
     // so that you can access them from any scope within your applications.For example,
     // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
@@ -59,15 +57,7 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
             }
          }
        })
-       .state('home.facts', {
-         url: "/facts",
-         views: {
-           'home-tab@tabs': {
-             controller: "FactsCtrl",
-             templateUrl: "templates/facts.html"
-           }
-         }
-       })
+
        .state('tabs.employee', {
            url: "/employee/{employeeId}",
            views: {
@@ -96,27 +86,11 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
            }
        })
 
-       .state('home.facts.facts2', {
-         url: "/facts2",
-         views: {
-           'home-tab@tabs': {
-             templateUrl: "templates/facts2.html"
-           }
-         }
-       })
        .state('tabs.about', {
          url: "/about",
          views: {
            'about-tab': {
              templateUrl: "templates/about.html"
-           }
-         }
-       })
-       .state('tabs.navstack', {
-         url: "/navstack",
-         views: {
-           'about-tab': {
-             templateUrl: "templates/nav-stack.html"
            }
          }
        })
@@ -128,7 +102,6 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
            }
          }
        });
-
 
       $urlRouterProvider.otherwise("/tab/home");
 });

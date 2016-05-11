@@ -25,6 +25,8 @@
     <script src="js/services/nfc.js"></script>
     <script src="js/services/parts.js"></script>
     <script src="js/services/employees.js"></script>
+    <script src="js/services/tasks.js"></script>
+    <script src="js/services/IoT.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/controllers/neck.js"></script>
     <script src="js/controllers/body.js"></script>
@@ -71,42 +73,29 @@
                       {{ time.weekdays[time.now.getDay()]}} {{ time.now | date: 'dd MMM yyyy'}}
                   </span>
               </div>
+              <div class="list card" ng-form="taskForm">
+                  <label class="item item-input">
+                      <input type="text" readonly="readonly" placeholder="Scan Employee Badge" ng-model="employee.id" ng-required="true" />
+                  </label>
+                  <label class="item item-input">
+                      <input type="text" readonly="readonly" placeholder="Scan Part" ng-model="part.id" ng-required="true" />
+                  </label>
+                  <label class="item item-input item-select">
+                      <div class="input-label">
+                          Select Task
+                      </div>
+                      <select ng-options="task as task.name for task in tasks track by task.workflow_step" ng-model="workflow_step" ng-required="true">
+                      </select>
+                 </label>
+                 <div class="item">
+                     <button class="button button-balanced button-full" ng-disabled="taskForm.$invalid" ng-click="send()">OK</button>
+                     <button class="button button-assertive button-full">Cancel</button>
+                 </div>
+              </div>
            </ion-content>
          </ion-view>
        </script>
 
-       <script id="templates/facts.html" type="text/ng-template">
-         <ion-view title="Facts">
-           <ion-content class="padding">
-             <p>Here we are starting on a nested state (home.facts), but since we have no history of going to this nested state from home, the back button still appears, knowing there is a parent state to navigate to. If there is a view to go back to in Ionic's history, the back button will default to that.</p>
-             <p>All the code is wrapped up in an angular module that needs to be included as a dependency of the app module. After that, you just have to replace <code>ion-nav-back-button</code> tag with <code>pr-nav-back-button</code> tag.</p>
-             <p>
-               <a class="button icon ion-home" ui-sref="^"> Home</a>
-               <a class="button icon icon-right ion-chevron-right"
-                  ui-sref=".facts2">More Facts</a>
-             </p>
-           </ion-content>
-         </ion-view>
-       </script>
-
-       <script id="templates/facts2.html" type="text/ng-template">
-         <ion-view title="Also Factual">
-           <ion-content class="padding">
-             <!--
-             <p>111,111,111 x 111,111,111 = 12,345,678,987,654,321</p>
-             <p>1 in every 4 Americans has appeared on T.V.</p>
-             <p>11% of the world is left-handed.</p>
-             <p>1 in 8 Americans has worked at a McDonalds restaurant.</p>
-             <p>$283,200 is the absolute highest amount of money you can win on Jeopardy.</p>
-             <p>101 Dalmatians, Peter Pan, Lady and the Tramp, and Mulan are the only Disney cartoons where both parents are present and don't die throughout the movie.</p>
-             <p>
-               <a class="button icon ion-home" ui-sref="^.^"> Home</a>
-               <a class="button icon ion-chevron-left" ui-sref="^">Scientific Facts</a>
-             </p>
-         -->
-           </ion-content>
-         </ion-view>
-       </script>
 
        <script id="templates/about.html" type="text/ng-template">
          <ion-view title="About">
@@ -115,11 +104,6 @@
                  Mid-Atlantic region using a mix of Cloud, Products, and Services.</p>
                   <div class="text-center"><img src="img/logo.png" class="center-block"/>
                   </div>
-             <!--
-             <p>
-               <a class="button icon icon-right ion-chevron-right" href="#/tab/navstack">Tabs Nav Stack</a>
-             </p>
-             -->
            </ion-content>
          </ion-view>
        </script>
