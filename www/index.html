@@ -28,6 +28,7 @@
     <script src="js/services/tasks.js"></script>
     <script src="js/services/IoT.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/controllers/hometab.js"></script>
     <script src="js/controllers/neck.js"></script>
     <script src="js/controllers/body.js"></script>
   </head>
@@ -55,8 +56,8 @@
              <ion-nav-view name="about-tab"></ion-nav-view>
            </ion-tab>
 
-           <ion-tab title="Contact" icon="ion-ios-world" ui-sref="tabs.contact">
-             <ion-nav-view name="contact-tab"></ion-nav-view>
+           <ion-tab title="Settings" icon="ion-android-settings" ui-sref="tabs.settings">
+             <ion-nav-view name="settings-tab"></ion-nav-view>
            </ion-tab>
 
          </ion-tabs>
@@ -76,7 +77,7 @@
               <div class="list card" ng-form="taskForm">
                   <label class="item item-input">
                       <input type="text" readonly="readonly" placeholder="Scan Employee Badge" ng-model="employee.id" ng-required="true" />
-                  </label>
+                  </label>                  
                   <label class="item item-input">
                       <input type="text" readonly="readonly" placeholder="Scan Part" ng-model="part.id" ng-required="true" />
                   </label>
@@ -116,22 +117,17 @@
          </ion-view>
        </script>
 
-       <script id="templates/contact.html" type="text/ng-template">
-         <ion-view title="Contact">
+       <script id="templates/settings.html" type="text/ng-template">
+         <ion-view title="Settings">
            <ion-content>
              <div class="list">
+               <label class="item item-input item-floating-label">
+                   <span class="input-label">Target URL</span>
+                   <input type="text" ng-model="targetUrl" ng-required="true" placeholder="https://example.com?param1=value1..." ng-model="settings.targetUrl"/>
+               </label>
                <div class="item">
-                 Anexinet, Inc.
+                   <button class="button button-balanced button-full">OK</button>
                </div>
-               <div class="item">
-                 Twitter: @anexinet
-               </div>
-               <!--
-               <a ui-sref="home.facts.facts2" class="item">
-                 <h2>Facts 2</h2>
-                 <p>This links to the <code>home.facts.facts2</code> sub-state. Notice, the tab will switch to home, but we will still be able to navigate up the state tree to <code>home.facts</code> and <code>home</code></p>
-               </a>
-               -->
              </div>
            </ion-content>
          </ion-view>

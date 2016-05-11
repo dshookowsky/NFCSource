@@ -1,3 +1,5 @@
+var targetUrl = 'http://10.10.30.64:3000/api/iot';
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -94,11 +96,12 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
            }
          }
        })
-       .state('tabs.contact', {
-         url: "/contact",
+       .state('tabs.settings', {
+         url: "/settings",
          views: {
-           'contact-tab': {
-             templateUrl: "templates/contact.html"
+           'settings-tab': {
+             //controller: "SettingsCtrl",
+             templateUrl: "templates/settings.html"
            }
          }
        });
