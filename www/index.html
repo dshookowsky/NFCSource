@@ -20,6 +20,8 @@
 
     <!-- your app's js -->
     <script src="js/modules/filter.js"></script>
+    <script src="js/modules/title-case-filter.js"></script>
+    <script src="js/modules/elapsedFilter.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services/services.js"></script>
     <script src="js/services/nfc.js"></script>
@@ -27,10 +29,10 @@
     <script src="js/services/employees.js"></script>
     <script src="js/services/tasks.js"></script>
     <script src="js/services/IoT.js"></script>
-    <script src="js/controllers.js"></script>
+    <script src="js/controllers/controllers.js"></script>
     <script src="js/controllers/hometab.js"></script>
-    <script src="js/controllers/neck.js"></script>
-    <script src="js/controllers/body.js"></script>
+    <script src="js/controllers/employee.js"></script>
+    <script src="js/controllers/part.js"></script>
   </head>
   <body ng-app="nfcsource">
       <ion-nav-view></ion-nav-view>
@@ -64,7 +66,7 @@
        </script>
 
        <script id="templates/home.html" type="text/ng-template">
-         <ion-view title="Home">
+         <ion-view title="Workbench #1">
            <ion-content class="padding">
                <div class="text-center">
                   <span id="clock" class="center">
@@ -74,24 +76,43 @@
                       {{ time.weekdays[time.now.getDay()]}} {{ time.now | date: 'dd MMM yyyy'}}
                   </span>
               </div>
-              <div class="list card" ng-form="taskForm">
-                  <label class="item item-input">
-                      <input type="text" readonly="readonly" placeholder="Scan Employee Badge" ng-model="employee.id" ng-required="true" />
-                  </label>                  
-                  <label class="item item-input">
-                      <input type="text" readonly="readonly" placeholder="Scan Part" ng-model="part.id" ng-required="true" />
-                  </label>
-                  <label class="item item-input item-select">
-                      <div class="input-label">
-                          Select Task
-                      </div>
-                      <select ng-options="task as task.name for task in tasks track by task.workflow_step" ng-model="workflow_step" ng-required="true">
-                      </select>
-                 </label>
-                 <div class="item">
-                     <button class="button button-balanced button-full" ng-disabled="taskForm.$invalid" ng-click="send()">OK</button>
-                     <button class="button button-assertive button-full">Cancel</button>
-                 </div>
+
+              <div class="card">
+                  <div ng-if="!currentEmployee" class="item item-text-wrap text-center">
+                      Please scan employee badge to continue.
+                  </div>
+                  <div ng-if="currentEmployee" class="item item-text-wrap">
+                      Currently signed in as {{ currentEmployee.name }}
+                  </div>
+                  <div class="item" ng-if="currentEmployee">
+                      <button class="button button-assertive button-full" ng-click="logout()">Logout</button>
+                  </div>
+              </div>
+              <div class="card" ng-if="currentEmployee && !currentTask">
+                  <div class="item item-text-wrap text-center">
+                      Please scan a part to begin a task
+                  </div>
+              </div>
+
+              <div class="card" ng-if="currentEmployee && currentTask">
+                  <div class="item item-divider">Part</div>
+                  <div class="item item-text-wrap">
+                      {{currentPart.type }} : {{ currentPart.id }}
+                  </div>
+                  <div class="item item-divider">Task</div>
+                  <div class="item item-text-wrap">
+                      {{ currentTask.name }}
+                  </div>
+                  <div class="item item-divider">Elapsed Time</div>
+                  <div class="item">
+                      {{ elapsedTime }}
+                  </div>
+                  <div class="item">
+                    <button class="button button-balanced button-full" ng-click="completeTask()">Task Complete</button>
+                  </div>
+                  <div class="item">
+                     <button class="button button-assertive button-full">Rework</button>
+                  </div>
               </div>
            </ion-content>
          </ion-view>
@@ -105,14 +126,6 @@
                  Mid-Atlantic region using a mix of Cloud, Products, and Services.</p>
                   <div class="text-center"><img src="img/logo.png" class="center-block"/>
                   </div>
-           </ion-content>
-         </ion-view>
-       </script>
-
-       <script id="templates/nav-stack.html" type="text/ng-template">
-         <ion-view title="Tab Nav Stack">
-           <ion-content class="padding">
-             <p><img src="http://ionicframework.com/img/diagrams/tabs-nav-stack.png" style="width:100%"></p>
            </ion-content>
          </ion-view>
        </script>
@@ -136,47 +149,30 @@
        <script id="templates/employee.html" type="text/ng-template">
            <ion-view title="Employee">
                <ion-content>
-                   <div class="list card">
-                       <label class="item item-input">
-                           <span class="item-label">Employee</span>
-                           <label class="valueLabel">{{ employee.id }}</label>
-                       </label>
-
-                       <button class="button button-full button-balanced" ng-click="cancel()">Start Job</button>
-                       <button class="button button-full button-balanced" ng-click="cancel()">End Job</button>
-                       <button class="button button-full button-assertive" ng-click="cancel()">Cancel</button>
-                   </div>
-
+                   <div class="card">
+                       <div class="item item-divider">
+                           <h2>Welcome ({{ employee.id }}) {{employee.name}}</h2>
+                       </div>
+                       <div class="item text-center">
+                           <img src="img/{{employee.id}}.jpg" />
+                       </div>
+                   <button class="button button-balanced button-full" ng-click="login()">Login</button>
                </ion-content>
            </ion-view>
        </script>
-       <script id="templates/neck.html" type="text/ng-template">
+       <script id="templates/part.html" type="text/ng-template">
            <ion-view>
                <ion-content>
+
                    <div class="list card">
-                       <div class="item item-divider">Neck Tasks</div>
+                       <div class="item item-divider">{{part.type | titlecase }} Tasks</div>
+                       <div class="item text-center">
+                           <img src="img/{{part.type}}.jpg" />
+                       </div>
                        <div class="item">
-                           <button class="button button-full button-balanced" ng-click="cancel()">Volute</button>
-                           <button class="button button-full button-balanced" ng-click="cancel()">Frets</button>
-                           <button class="button button-full button-balanced" ng-click="cancel()">Inlay</button>
+                           <button ng-repeat="task in tasks" data-task-id="task.workflow_step" class="button button-full button-balanced" ng-click="save(task)">{{task.name}}</button>
                            <button class="button button-full button-assertive" ng-click="cancel()">Cancel</button>
                      </div>
-                   </div>
-               </ion-content>
-           </ion-view>
-       </script>
-       <script id="templates/body.html" type="text/ng-template">
-           <ion-view>
-               <ion-content>
-                   <div class="list card">
-                       <div class="item item-divider">Body Tasks</div>
-                       <div class="item">
-                           <button class="button button-full button-balanced" ng-click="cancel()">Bend Sides</button>
-                           <button class="button button-full button-balanced" ng-click="cancel()">Purfling</button>
-                           <button class="button button-full button-balanced" ng-click="cancel()">Rosette</button>
-                           <button class="button button-full button-balanced" ng-click="cancel()">Glueup</button>
-                           <button class="button button-full button-assertive" ng-click="cancel()">Cancel</button>
-                       </div>
                    </div>
                </ion-content>
            </ion-view>

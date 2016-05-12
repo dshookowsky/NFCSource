@@ -5,7 +5,7 @@ angular.module('nfcsource.services')
 
         $ionicPlatform.ready(function() {
             nfc.addNdefListener(function (nfcEvent) {
-                console.log(JSON.stringify(nfcEvent.tag, null, 4));
+                //console.log(JSON.stringify(nfcEvent.tag, null, 4));
                 $rootScope.$apply(function(){
                     angular.copy(nfcEvent.tag, tag);
                     // if necessary $state.go('some-route')

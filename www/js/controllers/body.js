@@ -5,4 +5,6 @@ angular.module('nfcsource.controllers')
         $scope.cancel = function () {
             $ionicHistory.goBack();
         }
+
+        
     }])

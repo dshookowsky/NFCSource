@@ -17,17 +17,48 @@ angular.module('nfcsource.controllers')
 
       $timeout($scope.updateTime, 1000 * 60);
     }
-
     $scope.updateTime();  // Initialize clock
-    $scope.tasks = [];
+
+    $scope.updateElapsedTime = function () {
+        $scope.elapsedTime = $filter('elapsed')(Parts.getStartTime());
+        $timeout($scope.updateElapsedTime, 1000);
+    }
+    //$scope.updateElapsedTime();
+
+    //$scope.tasks = [];
+    Tasks.get('body').then(function (tasks) {
+        $scope.tasks = tasks;
+    });
+
     $scope.employee = null;
-    $scope.workflow_step = null;
     $scope.part = null;
+
+    $scope.$on('$ionicView.enter', function () {
+        $scope.currentEmployee = Employees.currentEmployee();
+        $scope.currentTask = Parts.currentTask();
+        $scope.currentPart = Parts.currentPart();
+        $scope.updateElapsedTime()
+    });
+
+    $scope.completeTask = function () {
+        Parts.clear();
+        $scope.currentPart = null;
+        $scope.currentTask = null;
+    };
 
     /* upload the data to the IoT hub */
     $scope.send = function () {
-            IoT.send($scope.workflow_step, $scope.employee.id, 1, $scope.part.id).then(function (response) {
+            IoT.send($scope.task, $scope.employee.id, 1, $scope.part.id).then(function (response) {
         });
+    };
+
+    $scope.logout = function () {
+        Parts.clear();
+        Employees.clear();
+        $scope.currentEmployee = null;
+        $scope.currentTask = null;
+        $scope.currentPart = null;
+
     };
 
   /* Listen for NFC tag events */
@@ -35,15 +66,10 @@ angular.module('nfcsource.controllers')
      var id = $filter('decodePayload')(tag.ndefMessage[0]);
 
      if (Employees.get(id)) {
-         //$state.go('tabs.employee', {employeeId: id });
-         $scope.employee = Employees.get(id);
+         $state.go('tabs.employee', {employeeId: id });
+         //$scope.employee = Employees.get(id);
      } else {
-
-         var part = Parts.get(id);
-         Tasks.get(part.type).then(function (tasks) {
-             $scope.tasks = tasks;
-         });
-         $scope.part = part;
+         $state.go('tabs.part', {partId: id});
      }
   });
 }]);

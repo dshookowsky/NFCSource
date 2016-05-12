@@ -7,7 +7,7 @@ var targetUrl = 'http://10.10.30.64:3000/api/iot';
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.services'])
+angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.services', 'nfcsource.filters'])
 
 .run(function($ionicPlatform, $rootScope, $state, $stateParams) {
     $ionicPlatform.ready(function() {
@@ -52,6 +52,7 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
        .state('home', {
          url: "/home",
          parent: "tabs",
+         cache: false,
          views: {
            'home-tab': {
                templateUrl: "templates/home.html",
@@ -69,11 +70,12 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
                }
            }
        })
+       /*
        .state('tabs.neckWork', {
            url: "/neck/{partId}",
            views: {
                'home-tab': {
-                   controller: "NeckCtrl",
+                   controller: "PartCtrl",
                    templateUrl: "templates/neck.html"
                }
            }
@@ -82,8 +84,18 @@ angular.module('nfcsource', ['ionic', 'nfcsource.controllers', 'nfcsource.servic
            url: "/body/{partId}",
            views: {
                'home-tab': {
-                   controller: "BodyCtrl",
+                   controller: "PartCtrl",
                    templateUrl: "templates/body.html"
+               }
+           }
+       })
+       */
+       .state('tabs.part', {
+           url: "/part/{partId}",
+           views: {
+               'home-tab': {
+                   controller: "PartCtrl",
+                   templateUrl: "templates/part.html"
                }
            }
        })
