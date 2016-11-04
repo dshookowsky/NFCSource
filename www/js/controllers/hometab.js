@@ -23,32 +23,47 @@ angular.module('nfcsource.controllers')
         $scope.elapsedTime = $filter('elapsed')(Parts.getStartTime());
         $timeout($scope.updateElapsedTime, 1000);
     }
-    //$scope.updateElapsedTime();
 
-    //$scope.tasks = [];
     Tasks.get('body').then(function (tasks) {
         $scope.tasks = tasks;
     });
-
-    $scope.employee = null;
-    $scope.part = null;
 
     $scope.$on('$ionicView.enter', function () {
         $scope.currentEmployee = Employees.currentEmployee();
         $scope.currentTask = Parts.currentTask();
         $scope.currentPart = Parts.currentPart();
+
+        // Only send the event message the first time we enter this page after
+        // starting a task (work-in-progress is false)
+        if (!Tasks.isWip()) {
+            if ($scope.currentPart && $scope.currentTask && $scope.currentEmployee) {
+                IoT.send($scope.currentPart,
+                         $scope.currentTask,
+                         $scope.currentEmployee,
+                         "Task Started").then(function (response) {
+
+                         });
+                Tasks.start();
+            }
+        }
         $scope.updateElapsedTime()
     });
 
     $scope.completeTask = function () {
         Parts.clear();
+        var part = $scope.currentPart;
+        var task = $scope.currentTask;
+        var employee = $scope.currentEmployee;
+
+        Tasks.stop();
         $scope.currentPart = null;
         $scope.currentTask = null;
+        $scope.send(part, task, employee, "Task Complete");
     };
 
     /* upload the data to the IoT hub */
-    $scope.send = function () {
-            IoT.send($scope.task, $scope.employee.id, 1, $scope.part.id).then(function (response) {
+    $scope.send = function (part, task, employee, description) {
+            IoT.send(part, task, employee, description).then(function (response) {
         });
     };
 

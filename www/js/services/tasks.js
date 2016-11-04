@@ -35,6 +35,15 @@ angular.module('nfcsource.services')
                     deferred.resolve(tasks);
                 }, 1000);
                 return deferred.promise;
+            },
+            start: function () {
+                this.wip = true;
+            },
+            stop: function () {
+                this.wip = false;
+            },
+            isWip: function () {
+                return this.wip || false;
             }
         };
     });

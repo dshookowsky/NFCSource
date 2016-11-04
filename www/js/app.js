@@ -1,6 +1,4 @@
-var targetUrl = 'http://10.10.30.64:3000/api/iot';
-
-// Ionic Starter App
+var targetUrl = 'https://TechSummitIoTDemo.azure-devices.net/devices/myFirstDevice/messages/events?api-version=2016-02-03';
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
